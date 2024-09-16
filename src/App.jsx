@@ -9,6 +9,7 @@ import ServiceView from "./page/ServiceView";
 import LoginView from "./page/auth/LoginView";
 import RegisterView from "./page/auth/RegisterView";
 import PublicLayout from "./layouts/PublicLayout";
+import CustomerView from "./page/CustomerView";
 
 const router = createBrowserRouter([
   {
@@ -20,12 +21,16 @@ const router = createBrowserRouter([
         element: <HomeView />,
       },
       {
-        path: "order",
+        path: "orders",
         element: <OrderView />,
       },
       {
-        path: "service",
+        path: "services",
         element: <ServiceView />,
+      },
+      {
+        path: "customers",
+        element: <CustomerView />,
       },
     ],
   },

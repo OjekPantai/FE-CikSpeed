@@ -154,7 +154,7 @@ const HomeView = () => {
                   Hypernova Headphones
                 </TableCell>
                 <TableCell>
-                  <Badge variant="outline">Active</Badge>
+                  <Badge variant="secondary">Active</Badge>
                 </TableCell>
                 <TableCell>$129.99</TableCell>
                 <TableCell className="hidden md:table-cell">100</TableCell>
