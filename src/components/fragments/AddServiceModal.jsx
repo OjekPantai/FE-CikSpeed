@@ -27,7 +27,7 @@ const AddServiceModal = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(formData);
-    onClose(); // Close modal after submission
+    onClose();
   };
 
   if (!isOpen) return null;
