@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import customAPI from "@/services/api";
+import PropTypes from "prop-types";
 
 import {
   Card,
@@ -19,20 +18,10 @@ import {
 } from "@/components/ui/table";
 import ServiceTableList from "../elements/ServiceTableList";
 
-const ServiceTable = () => {
-  const [services, setServices] = useState([]);
-  const getServices = async () => {
-    try {
-      const { data } = await customAPI.get("/services"); // add limit
-      setServices(data.data);
-    } catch (error) {
-      console.log(error);
-    }
+const ServiceTable = ({ services }) => {
+  ServiceTable.propTypes = {
+    services: PropTypes.array.isRequired,
   };
-
-  useEffect(() => {
-    getServices();
-  }, []);
 
   return (
     <Card>

@@ -11,6 +11,8 @@ import RegisterView from "./page/auth/RegisterView";
 import PublicLayout from "./layouts/PublicLayout";
 import CustomerView from "./page/CustomerView";
 
+import { loader as loaderService } from "./page/ServiceView";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -27,6 +29,7 @@ const router = createBrowserRouter([
       {
         path: "services",
         element: <ServiceView />,
+        loader: loaderService,
       },
       {
         path: "customers",
