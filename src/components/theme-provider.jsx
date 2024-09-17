@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
 const initialState = {
   theme: "system", // Default to system preference
@@ -48,11 +49,19 @@ export function ThemeProvider({
   );
 }
 
+// Define PropTypes for validation
+ThemeProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+  defaultTheme: PropTypes.oneOf(["system", "light", "dark"]),
+  storageKey: PropTypes.string,
+};
+
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext);
 
   if (context === undefined)
-    throw new Error("useTheme must be used within a ThemeProvider");
+    throw new Error("useTheme must be used within a ThemeProvider component");
 
   return context;
 };
