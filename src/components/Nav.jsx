@@ -50,7 +50,7 @@ const Nav = () => {
         }`}
       >
         <Users className="h-4 w-4" />
-        Data Pelanggan
+        Pelanggan
       </Link>
     </nav>
   );

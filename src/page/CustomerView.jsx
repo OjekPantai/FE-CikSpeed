@@ -1,38 +1,23 @@
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import CustomerTable from "@/components/fragments/customers/CustomerTable";
+import customAPI from "@/services/api";
+import { useLoaderData } from "react-router-dom";
+export const loader = async ({ request }) => {
+  const { data } = await customAPI.get("/users");
 
+  const users = data.data;
+  return { users };
+};
 const CustomerView = () => {
+  const { users } = useLoaderData();
   return (
-    <div>
-      <h1>CustomerView</h1>
-      <div>
-        <AlertDialog>
-          <AlertDialogTrigger>Open</AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction>Continue</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+    <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+      <div className="flex items-center">
+        <h1 className="text-lg font-semibold md:text-2xl">Data Pelanggan</h1>
       </div>
-    </div>
+      <section className="grid gap-4">
+        <CustomerTable users={users} />
+      </section>
+    </main>
   );
 };
 

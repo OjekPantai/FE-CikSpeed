@@ -10,8 +10,13 @@ import LoginView from "./page/auth/LoginView";
 import RegisterView from "./page/auth/RegisterView";
 import PublicLayout from "./layouts/PublicLayout";
 import CustomerView from "./page/CustomerView";
+import ErrorView from "./page/ErrorView";
 
+// Loader
 import { loader as loaderService } from "./page/ServiceView";
+import { loader as loaderOrder } from "./page/OrderView";
+import { loader as loaderCustomer } from "./page/CustomerView";
+import { loader as loaderHome } from "./page/HomeView";
 
 const router = createBrowserRouter([
   {
@@ -21,10 +26,12 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomeView />,
+        loader: loaderHome,
       },
       {
         path: "orders",
         element: <OrderView />,
+        loader: loaderOrder,
       },
       {
         path: "services",
@@ -34,6 +41,7 @@ const router = createBrowserRouter([
       {
         path: "customers",
         element: <CustomerView />,
+        loader: loaderCustomer,
       },
     ],
   },
@@ -44,6 +52,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterView />,
+  },
+  {
+    path: "*",
+    element: <ErrorView />,
   },
 ]);
 
