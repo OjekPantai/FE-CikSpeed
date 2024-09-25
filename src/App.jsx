@@ -14,14 +14,23 @@ import ErrorView from "./page/ErrorView";
 
 // Loader
 import { loader as loaderService } from "./page/ServiceView";
-import { loader as loaderOrder } from "./page/OrderView";
 import { loader as loaderCustomer } from "./page/CustomerView";
 import { loader as loaderHome } from "./page/HomeView";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+import { action as LoginAction } from "./page/auth/LoginView";
+import { action as RegisterAction } from "./page/auth/RegisterView";
+
+import { store } from "./stores/store";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <PublicLayout />,
+    element: (
+      <ProtectedRoute>
+        <PublicLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
@@ -31,7 +40,6 @@ const router = createBrowserRouter([
       {
         path: "orders",
         element: <OrderView />,
-        loader: loaderOrder,
       },
       {
         path: "services",
@@ -48,10 +56,12 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginView />,
+    action: LoginAction(store),
   },
   {
     path: "/register",
     element: <RegisterView />,
+    action: RegisterAction(store),
   },
   {
     path: "*",

@@ -15,14 +15,14 @@ export const loader = async () => {
 };
 
 const ServiceView = () => {
-  const { services } = useLoaderData();
-  const [addServices, setAddServices] = useState([]);
+  const { services: initialServices } = useLoaderData();
+  const [services, setServices] = useState(initialServices);
   const [addModalOpen, setAddModalOpen] = useState(false);
 
   const handleAddService = async (newService) => {
     try {
       const { data } = await customAPI.post("/services", newService);
-      setAddServices([...addServices, data.data]);
+      setServices([...services, data.data]);
       setAddModalOpen(false);
       toast.success("Service added successfully");
     } catch (error) {

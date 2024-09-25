@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 
@@ -37,8 +38,10 @@ const CustomerTable = ({ users }) => {
             <TableHeader>
               <TableRow>
                 <TableHead>Nama</TableHead>
-                <TableHead>Alamat</TableHead>
-                <TableHead className="text-center">Nomor Telfon</TableHead>
+                <TableHead className="text-muted-foreground">Alamat</TableHead>
+                <TableHead className="text-muted-foreground">
+                  Nomor Telfon
+                </TableHead>
                 <TableHead className="hidden text-end md:table-cell">
                   Tanggal Daftar
                 </TableHead>
@@ -50,9 +53,13 @@ const CustomerTable = ({ users }) => {
             <TableBody>
               {users.map((user) => (
                 <TableRow key={user.id}>
-                  <TableCell className="font-medium">{user.username}</TableCell>
-                  <TableCell>{user.address}</TableCell>
-                  <TableCell className="text-center">
+                  <TableCell className="font-medium capitalize">
+                    {user.username}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {user.address}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
                     {user.phoneNumber}
                   </TableCell>
                   <TableCell className="hidden text-muted-foreground md:table-cell text-end">

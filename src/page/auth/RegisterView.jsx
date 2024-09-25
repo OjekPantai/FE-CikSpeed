@@ -1,4 +1,5 @@
 import FormAuth from "@/components/fragments/auth/FormAuth";
+import { registerUser } from "@/features/userSlice";
 import customAPI from "@/services/api";
 import { redirect } from "react-router-dom";
 import { toast } from "sonner";

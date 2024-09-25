@@ -1,6 +1,5 @@
 import { useLoaderData } from "react-router-dom";
 import { useState, useEffect } from "react";
-import OrderTable from "@/components/fragments/orders/OrderTable";
 import customAPI from "@/services/api";
 import NewCustomerList from "@/components/fragments/users/NewCustomerList";
 import DashboardCardHeader from "@/components/fragments/dashboard/DashboardCardHeader";
@@ -10,7 +9,6 @@ import DashboardCardHeader from "@/components/fragments/dashboard/DashboardCardH
 export const loader = async ({ request }) => {
   const { data: ordersData } = await customAPI.get("/orders");
   const { data: usersData } = await customAPI.get("/users");
-
   const orders = ordersData.data.rows;
   const users = usersData.data;
   return { orders, users };
@@ -37,8 +35,8 @@ const HomeView = () => {
       }
     };
 
-    // Polling setiap 10 detik
-    const intervalId = setInterval(fetchOrdersAndUsers, 10000);
+    // Polling setiap 60 detik
+    const intervalId = setInterval(fetchOrdersAndUsers, 60000);
 
     // Cleanup interval saat komponen di-unmount
     return () => clearInterval(intervalId);
@@ -52,13 +50,13 @@ const HomeView = () => {
       <section className="grid grid-cols-2 md:grid-cols-2 gap-y-4 gap-x-4">
         <DashboardCardHeader orders={orders} />
       </section>
-      <section className="grid lg:grid-cols-2 lg:gap-x-4 gap-y-4">
-        <OrderTable
+      <section className="grid lg:grid-cols-2 lg:gap-x- gap-y-4">
+        {/* <OrderTable
           orders={orders}
           limit={5}
           isView={false}
           className="max-w-6xl"
-        />
+        /> */}
         <NewCustomerList users={users} />
       </section>
     </main>

@@ -46,7 +46,7 @@ const EditServiceModal = ({ open, onClose, service, onSubmit }) => (
           <Input
             id="estimate"
             name="estimate"
-            type="text"
+            type="number"
             defaultValue={service?.estimate || ""}
             required
           />
@@ -56,7 +56,7 @@ const EditServiceModal = ({ open, onClose, service, onSubmit }) => (
           <Input
             id="cost"
             name="cost"
-            type="text"
+            type="number"
             defaultValue={service?.cost || ""}
             required
           />

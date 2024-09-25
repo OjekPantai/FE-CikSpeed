@@ -51,7 +51,7 @@ const ServiceTable = ({ services }) => {
   const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const servicesPerPage = 10; // Jumlah layanan per halaman
+  const servicesPerPage = 10;
 
   const indexOfLastService = currentPage * servicesPerPage;
   const indexOfFirstService = indexOfLastService - servicesPerPage;
@@ -95,8 +95,9 @@ const ServiceTable = ({ services }) => {
     const updatedService = Object.fromEntries(formData);
 
     try {
-      await customAPI.put(`/services/${selectedService._id}`, updatedService);
+      await customAPI.put(`/services/${selectedService.id}`, updatedService);
       setEditModalOpen(false);
+      setSelectedService(null);
       toast.success("Service updated successfully");
     } catch (error) {
       toast.error(`Error updating service: ${error.message}`);
@@ -131,11 +132,11 @@ const ServiceTable = ({ services }) => {
                 <TableCell className="font-medium capitalize">
                   {service.name}
                 </TableCell>
-                <TableCell className="hidden lg:table-cell">
+                <TableCell className="hidden lg:table-cell text-muted-foreground">
                   {service.description}
                 </TableCell>
-                <TableCell className="hidden md:table-cell text-start">
-                  ± {service.estimate} menit
+                <TableCell className="hidden md:table-cell text-start text-muted-foreground">
+                  {service.estimate} menit
                 </TableCell>
                 <TableCell>Rp {service.cost.toLocaleString()}</TableCell>
                 <TableCell>

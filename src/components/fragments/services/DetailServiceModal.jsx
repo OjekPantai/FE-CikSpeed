@@ -6,6 +6,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { priceFormat } from "@/lib/utils";
 
 const DetailServiceModal = ({ open, onClose, service }) => {
   if (!service) {
@@ -25,8 +26,8 @@ const DetailServiceModal = ({ open, onClose, service }) => {
             {[
               { label: "Name", value: service.name },
               { label: "Description", value: service.description },
-              { label: "Cost", value: service.cost },
-              { label: "Estimate", value: service.estimate },
+              { label: "Cost", value: priceFormat(service.cost) },
+              { label: "Estimate", value: service.estimate + " menit" },
             ].map(({ label, value }, index) => (
               <div
                 key={index}
