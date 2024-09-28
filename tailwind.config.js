@@ -57,4 +57,7 @@ export default {
     },
   },
   plugins: [require("tailwindcss-animate")],
+  server: {
+    port: 5174,
+  },
 };

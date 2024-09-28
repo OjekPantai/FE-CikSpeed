@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Eye, MoreHorizontal, PlusCircle, Trash } from "lucide-react";
+import { Eye, MoreHorizontal, Trash } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -129,19 +129,6 @@ const OrderPage = () => {
           <CardHeader>
             <CardTitle className="flex justify-between">
               <div className="text-lg font-semibold md:text-2xl">Orders</div>
-              <div>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="h-8 gap-1"
-                  onClick={() => setAddModalOpen(true)}
-                >
-                  <PlusCircle className="h-3.5 w-3.5" />
-                  <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                    Add Order
-                  </span>
-                </Button>
-              </div>
             </CardTitle>
             <CardDescription>
               Manage your orders and view their details.
