@@ -22,6 +22,8 @@ import { action as LoginAction } from "./page/auth/LoginView";
 import { action as RegisterAction } from "./page/auth/RegisterView";
 
 import { store } from "./stores/store";
+import TransactionHistory from "./page/TransactionHistory";
+import ForbiddenView from "./page/ForbiddenView";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +53,10 @@ const router = createBrowserRouter([
         element: <CustomerView />,
         loader: loaderCustomer,
       },
+      {
+        path: "transactions",
+        element: <TransactionHistory />,
+      },
     ],
   },
   {
@@ -66,6 +72,10 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: <ErrorView />,
+  },
+  {
+    path: "/not-authorized",
+    element: <ForbiddenView />,
   },
 ]);
 

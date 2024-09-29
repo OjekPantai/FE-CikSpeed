@@ -13,10 +13,10 @@ export function Sidebar() {
             <Package2 className="h-6 w-6" />
             <span className="">CikSpeed</span>
           </Link>
-          <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
+          {/* <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
             <Bell className="h-4 w-4" />
             <span className="sr-only">Toggle notifications</span>
-          </Button>
+          </Button> */}
         </div>
         <div className="flex-1">
           <Nav />

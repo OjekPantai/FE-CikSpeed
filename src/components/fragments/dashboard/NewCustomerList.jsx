@@ -1,8 +1,8 @@
+/* eslint-disable react/prop-types */
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const NewCustomerList = ({ users }) => {
-  // Mengurutkan users berdasarkan createdAt dari yang terbaru
   const sortedUsers = users.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );

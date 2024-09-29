@@ -1,16 +1,18 @@
-import { Home, ListChecks, Package, Users } from "lucide-react";
+import { ArrowRightLeft, Home, ListChecks, Package, Users } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import { Badge } from "./ui/badge";
 
-const Nav = () => {
-  const location = useLocation(); // Get the current path
+const Nav = ({ closeSheet }) => {
+  const location = useLocation();
 
   return (
-    <nav className="grid items-start px-2 text-md font-medium lg:px-4">
+    <nav className="grid items-start gap-2 px-2 text-md font-medium lg:px-4">
       <Link
         to="/"
+        onClick={closeSheet}
         className={`flex items-center gap-3 px-3 py-2 transition-all hover:text-primary ${
-          location.pathname === "/" ? "text-primary" : "text-muted-foreground"
+          location.pathname === "/"
+            ? "text-primary bg-primary/10 rounded-md"
+            : "text-muted-foreground"
         }`}
       >
         <Home className="h-4 w-4" />
@@ -18,23 +20,22 @@ const Nav = () => {
       </Link>
       <Link
         to="/orders"
+        onClick={closeSheet}
         className={`flex items-center gap-3 px-3 py-2 transition-all hover:text-primary ${
           location.pathname === "/orders"
-            ? "text-primary"
+            ? "text-primary bg-primary/10 rounded-md"
             : "text-muted-foreground"
         }`}
       >
         <ListChecks className="h-4 w-4" />
         Antrian
-        <Badge className="ml-auto flex h-6 w-6 items-center justify-center rounded-full">
-          6
-        </Badge>
       </Link>
       <Link
         to="/services"
+        onClick={closeSheet}
         className={`flex items-center gap-3 px-3 py-2 transition-all hover:text-primary ${
           location.pathname === "/services"
-            ? "text-primary"
+            ? "text-primary bg-primary/10 rounded-md"
             : "text-muted-foreground"
         }`}
       >
@@ -42,15 +43,28 @@ const Nav = () => {
         Layanan Servis
       </Link>
       <Link
+        to="/transactions"
+        onClick={closeSheet}
+        className={`flex items-center gap-3 px-3 py-2 transition-all hover:text-primary ${
+          location.pathname === "/transactions"
+            ? "text-primary bg-primary/10 rounded-md"
+            : "text-muted-foreground"
+        }`}
+      >
+        <ArrowRightLeft className="h-4 w-4" />
+        Riwayat Transaksi
+      </Link>
+      <Link
         to="/customers"
+        onClick={closeSheet}
         className={`flex items-center gap-3 px-3 py-2 transition-all hover:text-primary ${
           location.pathname === "/customers"
-            ? "text-primary"
+            ? "text-primary bg-primary/10 rounded-md"
             : "text-muted-foreground"
         }`}
       >
         <Users className="h-4 w-4" />
-        Pelanggan
+        Data Pelanggan
       </Link>
     </nav>
   );

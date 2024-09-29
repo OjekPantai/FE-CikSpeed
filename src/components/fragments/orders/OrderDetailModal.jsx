@@ -32,7 +32,10 @@ const OrderDetailModal = ({ open, onClose, order }) => {
             { label: "Phone", value: order.User.phoneNumber },
             { label: "Complaint", value: order.complaint_message },
             { label: "Status", value: order.status },
-            { label: "Address", value: order.address || "No address provided" }, // Optional field, adjust as needed
+            {
+              label: "Address",
+              value: order.User.address || "No address provided",
+            },
           ].map(({ label, value }, index) => (
             <div key={index} className="flex justify-between items-center">
               <span className="font-medium text-muted-foreground">{label}</span>

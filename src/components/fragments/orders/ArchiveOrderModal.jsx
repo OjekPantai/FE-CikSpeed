@@ -10,35 +10,18 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 
-const DeleteOrderModal = ({
-  open,
-  onClose,
-  onConfirm,
-  order,
-  isLoading,
-  isTransaction,
-}) => (
+const ArchiveOrderModal = ({ open, onClose, onConfirm, order, isLoading }) => (
   <Dialog open={open} onOpenChange={onClose}>
     <DialogContent className="max-w-[425px] md:max-w-xl rounded-lg grid gap-6">
       <DialogHeader className="grid gap-4">
-        <DialogTitle>Delete Order</DialogTitle>
-        {isTransaction ? (
-          <DialogDescription>
-            Are you sure you want to delete{" "}
-            <span className="font-bold text-teal-600 capitalize">
-              {order?.User?.username}
-            </span>{" "}
-            from transaction history?
-          </DialogDescription>
-        ) : (
-          <DialogDescription>
-            Are you sure you want to delete{" "}
-            <span className="font-bold text-teal-600 capitalize">
-              {order?.User?.username}
-            </span>{" "}
-            from order?
-          </DialogDescription>
-        )}
+        <DialogTitle>Archive Order</DialogTitle>
+        <DialogDescription>
+          Are you sure you want to Archive{" "}
+          <span className="font-bold text-teal-600 capitalize">
+            {order?.User?.username}
+          </span>{" "}
+          from transaction history?
+        </DialogDescription>
       </DialogHeader>
       <DialogFooter>
         <div className="grid grid-cols-2 md:grid gap-4">
@@ -51,7 +34,7 @@ const DeleteOrderModal = ({
                 <Loading />
               </div>
             ) : (
-              "Delete"
+              "Archive"
             )}
           </Button>
         </div>
@@ -60,4 +43,4 @@ const DeleteOrderModal = ({
   </Dialog>
 );
 
-export default DeleteOrderModal;
+export default ArchiveOrderModal;

@@ -14,7 +14,16 @@ export const action =
       const response = await customAPI.post("/auth/login", data);
       store.dispatch(loginUser(response.data));
       toast.success("Login successful");
-      return redirect("/");
+
+      // Check user role
+      if (
+        response.data.data.user.role_id ===
+        "72d37b8b-fa40-4d29-ab1e-8723b420ce2d"
+      ) {
+        return redirect("/"); // Redirect to admin page
+      } else {
+        return redirect("/not-authorized");
+      }
     } catch (error) {
       const errorMessage = error?.response?.data?.message;
       toast.error(errorMessage);

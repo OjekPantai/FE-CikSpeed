@@ -1,14 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Archive, Eye, MoreHorizontal } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Eye, MoreHorizontal, Trash } from "lucide-react";
+
 import {
   Table,
   TableBody,
@@ -39,12 +33,10 @@ import customAPI from "@/services/api";
 import DeleteOrderModal from "@/components/fragments/orders/DeleteOrderModal";
 import AddOrderModal from "@/components/fragments/orders/AddOrderModal";
 import OrderDetailModal from "@/components/fragments/orders/OrderDetailModal";
-import ArchiveOrderModal from "@/components/fragments/orders/ArchiveOrderModal";
 
-const OrderPage = () => {
+const TransactionHistory = () => {
   const [orders, setOrders] = useState([]);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [archiveModalOpen, setArchiveModalOpen] = useState(false);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -55,17 +47,10 @@ const OrderPage = () => {
     setLoading(true);
     try {
       const { data } = await customAPI.get("/orders");
-      // Filter orders based on the specified statuses
-      const filteredOrders = data.data.rows.filter((order) =>
-        [
-          "menunggu konfirmasi",
-          "dalam antrian",
-          "sedang dikerjakan",
-          "selesai",
-        ].includes(order.status)
-      );
+      const filteredOrders = data.data.rows
+        .filter((order) => ["archived"].includes(order.status))
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Mengurutkan dari terbaru ke terlama
       setOrders(filteredOrders);
-      console.log(filteredOrders);
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {
@@ -77,9 +62,9 @@ const OrderPage = () => {
     getOrders();
   }, []);
 
-  const handleArchivedClick = (order) => {
+  const handleDeleteClick = (order) => {
     setSelectedOrder(order);
-    setArchiveModalOpen(true);
+    setDeleteModalOpen(true);
   };
 
   const handleDetailClick = (order) => {
@@ -101,21 +86,6 @@ const OrderPage = () => {
     }
   };
 
-  const handleArchiveConfirm = async () => {
-    setLoading(true);
-    try {
-      const archiveData = { status: "archived" };
-      await customAPI.put(`/orders/${selectedOrder.id}`, archiveData);
-      await getOrders();
-      setArchiveModalOpen(false);
-      toast.success("Order archived successfully");
-    } catch (error) {
-      toast.error(`Error archiving order: ${error.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleAddOrder = async (newOrder) => {
     setLoading(true);
     try {
@@ -131,31 +101,22 @@ const OrderPage = () => {
     }
   };
 
-  const handleStatusChange = async (orderId, newStatus) => {
-    setLoading(true);
-    try {
-      await customAPI.put(`/orders/${orderId}`, { status: newStatus });
-      await getOrders();
-      toast.success("Order status updated successfully");
-    } catch (error) {
-      toast.error(`Error updating order status: ${error.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <section>
         <div className="flex justify-between items-center">
-          <h1 className="text-lg font-semibold md:text-2xl">Orders</h1>
+          <h1 className="text-lg font-semibold md:text-2xl">
+            Riwayat Transaksi
+          </h1>
         </div>
       </section>
       <section>
         <Card>
           <CardHeader>
             <CardTitle className="flex justify-between">
-              <div className="text-lg font-semibold md:text-2xl">Orders</div>
+              <div className="text-lg font-semibold md:text-2xl">
+                Riwayat Transaksi
+              </div>
             </CardTitle>
             <CardDescription>
               Manage your orders and view their details.
@@ -168,31 +129,28 @@ const OrderPage = () => {
               </div>
             ) : orders.length === 0 ? (
               <div className="text-center text-gray-500">
-                Tidak ada data order yang tersedia.
+                Tidak ada data transaksi yang tersedia.
               </div>
             ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-xs md:text-base">Name</TableHead>
-                    <TableHead className="text-xs md:text-base hidden sm:table-cell">
+                    <TableHead>Name</TableHead>
+                    <TableHead className="  hidden sm:table-cell">
                       Motorcycle Type
                     </TableHead>
-                    <TableHead className="hidden md:text-base sm:table-cell">
+                    <TableHead className="hidden  sm:table-cell">
                       Phone
                     </TableHead>
-                    <TableHead className="hidden md:text-base sm:table-cell">
+                    <TableHead className="hidden  sm:table-cell">
                       Services
                     </TableHead>
-                    <TableHead className="hidden md:text-base sm:table-cell">
+                    <TableHead className="hidden  sm:table-cell">
                       Estimate
                     </TableHead>
-                    <TableHead className="text-xs md:text-base sm:table-cell">
-                      Total Price
-                    </TableHead>
-                    <TableHead className="text-xs md:text-base">
-                      Status
-                    </TableHead>
+                    <TableHead>Total Price</TableHead>
+                    <TableHead>Tanggal</TableHead>
+
                     <TableHead>
                       <span className="sr-only">Actions</span>
                     </TableHead>
@@ -200,7 +158,7 @@ const OrderPage = () => {
                 </TableHeader>
                 <TableBody>
                   {orders.map((order) => (
-                    <TableRow className="text-xs lg:text-base" key={order.id}>
+                    <TableRow key={order.id}>
                       <TableCell className="font-semibold capitalize">
                         {truncateMessage(order.User?.username || "", 3)}
                       </TableCell>
@@ -215,36 +173,24 @@ const OrderPage = () => {
                           <div key={service.id}>{service.name}</div>
                         ))}
                       </TableCell>
-                      <TableCell className="hidden sm:table-cell text-muted-foreground font-regular">
+                      <TableCell className="hidden sm:table-cell text-muted-foreground ">
                         {order.total_estimate} Menit
                       </TableCell>
-                      <TableCell className="sm:table-cell sm:font-regular">
+                      <TableCell className="sm:table-cell ">
                         {priceFormat(order.total_cost)}
                       </TableCell>
-                      <TableCell className="font-semibold">
-                        <Select
-                          defaultValue={order.status}
-                          onValueChange={(value) =>
-                            handleStatusChange(order.id, value)
-                          }
-                        >
-                          <SelectTrigger className="w-[120px] lg:w-[190px]">
-                            <SelectValue placeholder="-" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="menunggu konfirmasi">
-                              Menunggu Konfirmasi
-                            </SelectItem>
-                            <SelectItem value="dalam antrian">
-                              Dalam Antrian
-                            </SelectItem>
-                            <SelectItem value="sedang dikerjakan">
-                              Sedang Dikerjakan
-                            </SelectItem>
-                            <SelectItem value="selesai">Selesai</SelectItem>
-                          </SelectContent>
-                        </Select>
+                      <TableCell className="sm:table-cell text-muted-foreground ">
+                        {new Date(order.createdAt).toLocaleDateString("id-ID", {
+                          timeZone: "Asia/Jakarta",
+                          hour: "numeric",
+                          minute: "numeric",
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
                       </TableCell>
+
                       <TableCell>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -267,11 +213,11 @@ const OrderPage = () => {
                               Detail
                             </DropdownMenuItem>
                             <DropdownMenuItem
-                              onClick={() => handleArchivedClick(order)}
-                              className="text-teal-600 cursor-pointer"
+                              onClick={() => handleDeleteClick(order)}
+                              className="text-red-600 cursor-pointer"
                             >
-                              <Archive className="mr-2 h-4 w-4" />
-                              Archive
+                              <Trash className="mr-2 h-4 w-4" />
+                              Delete
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -292,16 +238,8 @@ const OrderPage = () => {
         onConfirm={handleDeleteConfirm}
         order={selectedOrder}
         isLoading={loading}
-        isTransaction={false}
+        isTransaction={true}
       />
-      <ArchiveOrderModal
-        open={archiveModalOpen}
-        onClose={() => setArchiveModalOpen(false)}
-        onConfirm={handleArchiveConfirm}
-        order={selectedOrder}
-        isLoading={loading}
-      />
-
       <AddOrderModal
         open={addModalOpen}
         onClose={() => setAddModalOpen(false)}
@@ -318,4 +256,4 @@ const OrderPage = () => {
   );
 };
 
-export default OrderPage;
+export default TransactionHistory;

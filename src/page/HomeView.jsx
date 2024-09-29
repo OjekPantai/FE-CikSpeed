@@ -1,11 +1,11 @@
 import { useLoaderData } from "react-router-dom";
 import { useState, useEffect } from "react";
 import customAPI from "@/services/api";
-import NewCustomerList from "@/components/fragments/users/NewCustomerList";
 import DashboardCardHeader from "@/components/fragments/dashboard/DashboardCardHeader";
+import LatestTransaction from "@/components/fragments/dashboard/LatestTransaction";
+import NewCustomerList from "@/components/fragments/dashboard/NewCustomerList";
 
-// Loader to fetch initial data
-// eslint-disable-next-line no-unused-vars
+// Loader function to fetch initial data before component renders
 export const loader = async ({ request }) => {
   const { data: ordersData } = await customAPI.get("/orders");
   const { data: usersData } = await customAPI.get("/users");
@@ -15,32 +15,29 @@ export const loader = async ({ request }) => {
 };
 
 const HomeView = () => {
-  const { orders: initialOrders, users: initialUsers } = useLoaderData();
+  const { orders: initialOrders, users: initialUsers } = useLoaderData(); // Load initial data from loader
   const [orders, setOrders] = useState(initialOrders);
   const [users, setUsers] = useState(initialUsers);
 
-  // Polling data setiap 10 detik untuk orders dan users
+  // Fetch updated data when component mounts
   useEffect(() => {
     const fetchOrdersAndUsers = async () => {
       try {
-        // Fetch orders
+        // Fetch orders data
         const { data: ordersData } = await customAPI.get("/orders");
-        setOrders(ordersData.data.rows); // Update orders dengan data terbaru
+        setOrders(ordersData.data.rows); // Ensure you're using the correct path to data
 
-        // Fetch users
+        // Fetch users data
         const { data: usersData } = await customAPI.get("/users");
-        setUsers(usersData.data); // Update users dengan data terbaru
+        setUsers(usersData.data); // Ensure correct data is being set
       } catch (error) {
         console.error("Failed to fetch data", error);
       }
     };
 
-    // Polling setiap 60 detik
-    const intervalId = setInterval(fetchOrdersAndUsers, 60000);
-
-    // Cleanup interval saat komponen di-unmount
-    return () => clearInterval(intervalId);
-  }, []);
+    // Call the function to fetch data
+    fetchOrdersAndUsers();
+  }, []); // Run only once when the component is mounted
 
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-x-4 lg:p-6">
@@ -50,14 +47,9 @@ const HomeView = () => {
       <section className="grid grid-cols-2 md:grid-cols-2 gap-y-4 gap-x-4">
         <DashboardCardHeader orders={orders} />
       </section>
-      <section className="grid lg:grid-cols-2 lg:gap-x- gap-y-4">
-        {/* <OrderTable
-          orders={orders}
-          limit={5}
-          isView={false}
-          className="max-w-6xl"
-        /> */}
+      <section className="grid lg:grid-cols-2 lg:gap-x-4 gap-y-4">
         <NewCustomerList users={users} />
+        <LatestTransaction orders={orders} />
       </section>
     </main>
   );
